@@ -18,9 +18,9 @@ class SharedPower(tk.Tk):
     def log_in(self, u_log, u_pass):
         global login
         global user_path
-        if u_log.get() in rf.search_values():
+        if u_log.get() in rf.check_login():
 
-            if u_pass.get() == rf.search_value(u_log.get()):
+            if u_pass.get() == rf.check_pass(u_log.get()):
                 print('Logged in')
 
                 login = u_log.get()
