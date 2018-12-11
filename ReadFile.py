@@ -5,14 +5,14 @@ def check_pass(login):
     Use to get password for specific login
 
     You need to pass:
-    login = login value as string 
+    login = login value as string
     """
     with open("Data/users.csv", 'r') as f:
         l = list(csv.reader(f))
         my_dict = {i[0]:[x for x in i[1:]] for i in zip(*l)}
         ind = my_dict['login'].index(login)
-        return my_dict['password'][ind] 
-    
+        return my_dict['password'][ind]
+
 
 def check_login():
     """
@@ -21,7 +21,7 @@ def check_login():
     with open("Data/users.csv", 'r') as f:
         l = list(csv.reader(f))
         my_dict = {i[0]:[x for x in i[1:]] for i in zip(*l)}
-        return my_dict.get('login') 
+        return my_dict.get('login')
 
 def get_allfromcolumn(key):
     """
@@ -49,7 +49,7 @@ def get_tool(key,value):
         l = list(csv.reader(f))
         my_dict = {i[0]:[x for x in i[1:]] for i in zip(*l)}
         ind = my_dict[key].index(value)
-        for x in my_dict:                                       
+        for x in my_dict:
             print(my_dict[x][ind])
 
 def get_alltools():
@@ -81,16 +81,16 @@ def search_tools(key,value):
         for x in my_dict:
             print('======================')
             y=0
-            while y<len(indices):
-                print(my_dict[x][indices[y]])
+            while y<len(items):
+                print(my_dict[x][items[y]])
                 y=y+1
 
         print('\n+++++++++++OptionB+++++++++++++')
 
-        for y in range(0, len(indices)):
+        for y in range(0, len(items)):
             print('======================')
             for x in my_dict:
-                print(my_dict[x][indices[y]])
+                print(my_dict[x][items[y]])
 
 
 
@@ -123,11 +123,11 @@ def search_tools(key,value):
 #     return value from 'password' column from index of first 'Adamus123' from 'login' column.
 
 #     """
-#     with open("Data/users.csv", 'r') as f:
-#         l = list(csv.reader(f))
-#         my_dict = {i[0]:[x for x in i[1:]] for i in zip(*l)}
-#         ind = my_dict['login'].index(login)
-#         return my_dict['password'][ind]                          #GET VALUE OF INDEX^ FROM KEY
+    # with open("Data/users.csv", 'r') as f:
+    #     l = list(csv.reader(f))
+    #     my_dict = {i[0]:[x for x in i[1:]] for i in zip(*l)}
+    #     ind = my_dict['login'].index(login)
+    #     return my_dict['password'][ind]                          #GET VALUE OF INDEX^ FROM KEY
         #                                                         #'password'
         # print('==================')
 
@@ -156,4 +156,4 @@ def search_tools(key,value):
         #         print(my_dict[x][indices[y]])
 
 #get_tool('toolBrand','Bosh')
-print(get_alltools())
+# print(get_alltools())

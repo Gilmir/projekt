@@ -1,5 +1,6 @@
 import tkinter as tk
 import ReadFile as rf
+import csv
 
 user_path ="Data/users.csv"
 login = 'main'
@@ -97,11 +98,133 @@ class MainMenu(tk.Frame):
 
     def __init__(self, master):
         global login
-
         tk.Frame.__init__(self, master)
+        master.geometry("700x500+%d+%d" % ((self.winfo_screenwidth()/2)-350, (self.winfo_screenheight()/2)-250))
+        master.minsize(width=500, height=500)
 
-        Label = tk.Label(self ,text = "Main menu for user: "+login).grid(row=1,column=0)
-        b_logout = tk.Button(self, text="Log Out",command=lambda : master.log_out()).grid(row=2,column=0)
+
+        root=tk.Frame(self)
+        root.grid(row=0,column=0,sticky=tk.N+tk.E+tk.W)
+        root.grid_columnconfigure(0, weight=1)
+        root.grid_rowconfigure(0,weight=1)
+        ###########################
+        # TOP frame start here
+        ###########################
+        header=tk.Frame(root,bg="red")
+        header.grid(row=0,column=0,columnspan=2,sticky=tk.N+tk.E+tk.W)
+        header.grid_columnconfigure(0, weight=1)
+        header.grid_rowconfigure(0,weight=1)
+
+        Label = tk.Label(header ,text = "Main menu for user: "+login).grid(row=0,column=0, sticky=tk.W)
+        b_logout = tk.Button(header, text="Log Out",command=lambda : master.log_out()).grid(row=0,column=5, sticky=tk.E)
+
+        ###########################
+        # LEFT frame start here
+        ###########################
+        left=tk.Frame(root,bg="blue")
+        left.grid(row=1,column=0)
+        left.grid_columnconfigure(0, weight=1)
+        left.grid_rowconfigure(0,weight=1)
+
+        tlabel=tk.Label(left,text="Your Tools").grid(row=0,column=0,columnspan=5)
+
+        with open("Data/tools.csv", 'r') as f:
+            l = list(csv.reader(f))
+            my_dict = {i[0]:[x for x in i[1:]] for i in zip(*l)}
+
+            itemsa = [i for i, x in enumerate(my_dict['owner']) if x == login]
+            itemsb = [i for i, x in enumerate(my_dict['availability']) if x == 'yes']
+            items = list(set(itemsa).intersection(itemsb))
+            print(itemsa)
+            print(itemsb)
+            print(items)
+
+            del my_dict["availability"]
+            del my_dict["imgPath"]
+            del my_dict['owner']
+            del my_dict['ID']
+
+            head = ['Name','Discr','PpD','PpHD','next1','next2']
+
+
+            for x in my_dict:
+
+                tk.Label(left, text=head[list(my_dict.keys()).index(x)],borderwidth=2, relief="groove",width=6,padx=5,pady=5).grid(row=3,column=list(my_dict.keys()).index(x))
+
+                y=0
+
+                while y<len(items):
+                    tk.Label(left ,text =my_dict[x][items[y]], borderwidth=2, relief="ridge",width=6,padx=5,pady=5).grid(row=4+y,column=list(my_dict.keys()).index(x))
+                    tk.Button(left, text="more").grid(row=4+y,column=8)
+                    y=y+1
+
+
+
+        ###########################
+        # RIGHT frame start here
+        ###########################
+        right=tk.Frame(root,bg="green")
+        right.grid(row=1,column=1)
+
+        right.isgridded=True #Dynamically add "isgridded" attribute.
+        tlabel=tk.Label(right,text="Your booked Tools will be here... maybe").grid(row=0,column=0,columnspan=5)
+
+        with open("Data/tools.csv", 'r') as f:
+            l = list(csv.reader(f))
+            my_dict = {i[0]:[x for x in i[1:]] for i in zip(*l)}
+
+            itemsa = [i for i, x in enumerate(my_dict['owner']) if x == login]
+            itemsb = [i for i, x in enumerate(my_dict['availability']) if x == 'no']
+            items = list(set(itemsa).intersection(itemsb))
+            print(itemsa)
+            print(itemsb)
+            print(items)
+
+            del my_dict["availability"]
+            del my_dict["imgPath"]
+            del my_dict['owner']
+            del my_dict['ID']
+
+            head = ['Name','Discr','PpD','PpHD','next1','next2']
+
+
+            for x in my_dict:
+
+                tk.Label(right, text=head[list(my_dict.keys()).index(x)],borderwidth=2, relief="groove",width=6,padx=5,pady=5).grid(row=3,column=list(my_dict.keys()).index(x))
+
+                y=0
+
+                while y<len(items):
+                    tk.Label(right ,text =my_dict[x][items[y]], borderwidth=2, relief="ridge",width=6,padx=5,pady=5).grid(row=4+y,column=list(my_dict.keys()).index(x))
+                    tk.Button(right, text="more").grid(row=4+y,column=8)
+                    y=y+1
+
+
+        ###########################
+        # RIGHT2 frame start here
+        ###########################
+        right2=tk.Frame(root,bg="yellow")
+        right2.isgridded=False
+        right2_label=tk.Label(right2,text="text2")
+        right2_label.grid(row=0,column=0)
+
+        def switch():
+            print ("Called")
+            if(right.isgridded):
+                right.isgridded=False
+                right.grid_forget()
+                right2.isgridded=True
+                right2.grid(row=1,column=1)
+            else:
+                right2.isgridded=False
+                right2.grid_forget()
+                right.isgridded=True
+                right.grid(row=1,column=1)
+
+
+        switch_button=tk.Button(root,text="Switch",command=switch)
+        switch_button.grid(row=2,column=1)
+
 
         """
         What we need in MainMenu?
